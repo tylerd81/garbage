@@ -1,3 +1,4 @@
+#TODO: add a way to mark days with different symbols
 
 import datetime
 
@@ -40,8 +41,11 @@ class Calendar():
         print('S  M  T  W  T  F  S')
 
     def display_calendar(self):
-        starting_day = self.current_date.weekday()
-        print('Starting day is ' + str(starting_day))
+        
+        starting_day = self.current_date.weekday()       
+        
+        current_marked_days = self.marked_days[self.current_date.month - 1]
+        marked_days_index = 0
 
         self.display_header()
 
@@ -58,13 +62,20 @@ class Calendar():
         #So getting the days to line up as Sunday - Saturday like a regular calendar
         #takes some checking.
 
-        for i in range(1, num_days + 1):
-            print('%-2d ' % i, end='')
+        for current_day in range(1, num_days + 1):
+            
+            if (current_marked_days != None and 
+                marked_days_index < len(current_marked_days) and
+                current_marked_days[marked_days_index] == current_day):
+                print('*  ', end='')
+                marked_days_index += 1
+            else:
+                print('%-2d ' % current_day, end='')
 
             starting_day += 1
 
             if starting_day == 6:
-                print('\n')                
+                print('')                
             elif starting_day > 6:
                 starting_day = 0
 
@@ -101,5 +112,5 @@ class Calendar():
         if month < 1 or month > 12:
             return
         
-        self.marked_days.insert(month, days_to_mark) 
+        self.marked_days.insert(month - 1, days_to_mark) 
         
