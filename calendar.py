@@ -107,6 +107,8 @@ class Calendar():
     days_to_mark is a list of days
     """
 
+    #maybe make a new class to hold the holidays...
+    
     def mark_days(self, month, days_to_mark):
         
         if month < 1 or month > 12:
