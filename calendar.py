@@ -1,6 +1,7 @@
 #TODO: add a way to mark days with different symbols
 
 import datetime
+import holiday_list
 
 class Calendar():
 
@@ -8,8 +9,8 @@ class Calendar():
     def __init__(self, year):
 
         self.year = year
-        self.current_date = datetime.date(self.year, 1, 1)
-        self.marked_days = [None] * 12
+        self.current_date = datetime.date(self.year, 1, 1)        
+        self.holiday_list = holiday_list.HolidayList()
 
         #number of days per month
         self.days_per_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -42,11 +43,8 @@ class Calendar():
 
     def display_calendar(self):
         
-        starting_day = self.current_date.weekday()       
+        starting_day = self.current_date.weekday()          
         
-        current_marked_days = self.marked_days[self.current_date.month - 1]
-        marked_days_index = 0
-
         self.display_header()
 
         #print the correct number of spaces to start the day on the correct day
@@ -62,13 +60,21 @@ class Calendar():
         #So getting the days to line up as Sunday - Saturday like a regular calendar
         #takes some checking.
 
+        current_month = self.current_date.month 
         for current_day in range(1, num_days + 1):
             
-            if (current_marked_days != None and 
-                marked_days_index < len(current_marked_days) and
-                current_marked_days[marked_days_index] == current_day):
-                print('*  ', end='')
-                marked_days_index += 1
+            # if (current_marked_days != None and 
+            #     marked_days_index < len(current_marked_days) and
+            #     current_marked_days[marked_days_index] == current_day):
+            #     print('*  ', end='')
+            #     marked_days_index += 1
+
+            if self.holiday_list.is_holiday(current_month, current_day):
+                symbol = self.holiday_list.get_symbol(current_month, current_day)
+                if symbol != None:
+                    print('{}  '.format(symbol), end='')
+                else:
+                    print('*  ', end='')
             else:
                 print('%-2d ' % current_day, end='')
 
@@ -92,27 +98,17 @@ class Calendar():
         self.current_date = self.current_date.replace(month=val)
 
 
-    """mark_days() adds to the list of marked days on the calendar.
-    marked_days is a list of list items like this:
-    
-    [[13,23], [12,29]]
-    
-    Each index is a month and then the list will be the days to mark
-    The list should be sorted
-
-    The months will be from 1 - 12 since that is what datetime works with but the
-    list index will be from 0 - 11
-
-    Any days that are already marked for the month will be overwritten
-    days_to_mark is a list of days
+    """mark_days() adds to the list of marked days on the calendar.   
     """
 
     #maybe make a new class to hold the holidays...
     
-    def mark_days(self, month, days_to_mark):
-        
+    def mark_days(self, month, days_to_mark, symbol='*'):        
+
         if month < 1 or month > 12:
             return
         
-        self.marked_days.insert(month - 1, days_to_mark) 
+        for day in days_to_mark:
+            print('Marking {}/{}'.format(month, day))
+            self.holiday_list.add_holiday(month, day, symbol)
         
