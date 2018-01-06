@@ -4,7 +4,10 @@ class HolidayList():
         # the list of lists that will hold the holidays
         self.holidays = [None] * 12
 
-    def add_holiday(self, month, day, symbol='*'):               
+    def add_holiday(self, holiday_dict, symbol='*'):               
+        day = holiday_dict['day']
+        month = holiday_dict['month']
+        
         if month < 1 or month > 12:
             return  # invalid month
 
@@ -16,7 +19,7 @@ class HolidayList():
         if self.holidays[month_index] == None:
             self.holidays[month_index] = []
 
-        self.holidays[month_index].append({'month' : month, 'day' : day, 'symbol' : symbol})
+        self.holidays[month_index].append({'month' : month, 'day' : day, 'symbol':symbol})
 
     def is_holiday(self, month, day):        
         if month < 1 or month > 12:

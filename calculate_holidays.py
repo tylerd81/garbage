@@ -6,8 +6,9 @@
     Independence Day - July 4
     Labor Day - First Monday in September
     Columbus Day - Second Monday in October
-    Veterans Day - November 11
-    Thanksgiving - Fourth Thursday in November
+    Election Day
+    Veterans Day - November 11 (also day after if on a weekend?)
+    Thanksgiving - Fourth Thursday in November    
     Christmas - December 25
 """
 
@@ -75,12 +76,6 @@ def calc_labor_day(year):
     while labor_day.weekday() != 0:
         labor_day = labor_day + datetime.timedelta(days=1)
 
-    print('Labor Day is: {}/{}/{}'.format(
-        labor_day.month,
-        labor_day.day,
-        labor_day.year
-    ))
-
     return labor_day
 
 def calc_columbus_day(year):
@@ -116,20 +111,49 @@ def calc_thanksgiving(year):
         thanks = thanks  + datetime.timedelta(days=1)
 
     thanks = thanks + datetime.timedelta(days=21) # 21 days == jumps 3 Thurs. ahead
-   
-    print('Thanksgiving is {}/{}/{}'.format(
-        thanks.month,
-        thanks.day,
-        thanks.year
-    ))
-
     return thanks
 
+def calc_election_day(year):
+    # Election day is the first Tuesday following the first Monday of November
+    # This means a monday has to come first in November, so if November starts on
+    # a Tuesday, it is not election day until the next Tuesday (since Monday hasn't
+    # occured in November yet)
+
+    #find the first Monday in November and then just add one day
+    election_day = datetime.date(year, 11,1)
+
+    while election_day.weekday() != 0:  # 0 is Monday
+        election_day = election_day + datetime.timedelta(days=1)
+
+    election_day = election_day + datetime.timedelta(days=1) # 1 more for Tuesday   
+
+    return election_day
+
+def calc_veterans_day(year):
+    
+    #November 11 
+    #If november 11 is a saturday then november 10 is a holiday
+    #if november 11 is a sunday, then november 12 is a holiday
+
+    vet_day = datetime.date(year, 11, 11)
+
+    if vet_day.weekday() == 5: #Saturday
+        vet_day = vet_day - datetime.timedelta(days=1)
+    elif vet_day.weekday() == 6: #Sunday
+        vet_day = vet_day + datetime.timedelta(days=1)
+
+    return vet_day
+
+def to_cal_format(date):    
+    d = {'month' : date.month, 'day' : date.day}
+    return d    
+
 if __name__ == '__main__':
-    year = 2018
+    year = 2019
     calc_mlk_day(year)
     calc_presidents_day(year)
     calc_memorial_day(year)
     calc_labor_day(year)
     calc_columbus_day(year)
     calc_thanksgiving(year)
+    calc_election_day(year)
