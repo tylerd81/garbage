@@ -18,7 +18,7 @@ def create_schedule():
 
     # skip sat and sun
 
-    while current_date.month == 1:
+    while current_date.month < 4 :
         #make sure it's not saturday, sunday, or a holiday       
         if ( current_date.weekday() != 5 and current_date.weekday() != 6 and
              not holidays.is_holiday(current_date.month, current_date.day)):
@@ -33,7 +33,7 @@ def create_schedule():
                 current_district += 1
         
         # goto the next day
-        current_date = current_date + next_day    
+        current_date = current_date + next_day
 
 
     # use the district key to filter dates for a specific district
