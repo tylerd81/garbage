@@ -8,7 +8,7 @@ def next_pickup_day(district):
     schedule = create_schedule.create_schedule(year)[district]
 
     today = datetime.date.today()
-    
+
     #find the date closest to today
     
     schedule_index = 0
@@ -42,9 +42,10 @@ def next_pickup_day(district):
         if today.day == garbage_day['day'] and today.month == garbage_day['month']:
             print('Your garbage pickup is TODAY!')
         else:
-            print('Your next garbage pickup is: {}/{}'.format(
-                garbage_day['month'],
-                garbage_day['day']
+            pickup = datetime.date(year, garbage_day['month'], garbage_day['day'])
+
+            print('Your next garbage pickup is: {}'.format(
+                pickup.strftime('%A, %B %d'),               
             ))
     else:
         print('There is no garbage pickup.')
