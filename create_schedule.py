@@ -20,6 +20,12 @@ The scheduler tries to schedule each district for pickup once every seven days. 
 takes into account all holidays and weekends. There is no garbage pickup on weekends.
 There is no garbage pickup on holidays. When there is a holiday the entire schedule is
 shifted ahead one day.
+
+This code assumes that collection starts at the begining of the year with district 1
+being collected first... This should work but could cause a problem if district 5 isn't
+the last district to be collected in the previous year. It might be necessary to check
+the last collection of the previous year before making the schedule. But for 2018 it 
+seems to be working ok and matches up to the schedules at https://cityofschenectady.com/531/Waste-Collection-Schedules
 """
 
 def create_schedule(year):
