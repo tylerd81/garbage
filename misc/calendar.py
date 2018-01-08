@@ -61,15 +61,9 @@ class Calendar():
         #takes some checking.
 
         current_month = self.current_date.month 
-        for current_day in range(1, num_days + 1):
-            
-            # if (current_marked_days != None and 
-            #     marked_days_index < len(current_marked_days) and
-            #     current_marked_days[marked_days_index] == current_day):
-            #     print('*  ', end='')
-            #     marked_days_index += 1
+        for current_day in range(1, num_days + 1):          
 
-            if self.holiday_list.is_holiday(current_month, current_day):
+            if self.holiday_list and self.holiday_list.is_holiday(current_month, current_day):
                 symbol = self.holiday_list.get_symbol(current_month, current_day)
                 if symbol != None:
                     print('{}  '.format(symbol), end='')
@@ -112,3 +106,6 @@ class Calendar():
             print('Marking {}/{}'.format(month, day))
             self.holiday_list.add_holiday(month, day, symbol)
         
+
+    def set_holiday_list(self, holidays):
+        self.holiday_list = holidays
